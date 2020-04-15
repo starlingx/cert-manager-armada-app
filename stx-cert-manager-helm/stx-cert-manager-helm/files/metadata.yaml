@@ -1,4 +1,0 @@
-maintain_user_overrides: true
-
-app_name: stx-cert-manager
-helm_repo: stx-platform
