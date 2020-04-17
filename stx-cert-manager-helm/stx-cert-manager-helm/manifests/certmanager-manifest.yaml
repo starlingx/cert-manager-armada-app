@@ -46,19 +46,19 @@ data:
       imagePullSecrets: [{"name": "default-registry-key"}]
     image:
       repository: quay.io/jetstack/cert-manager-controller
-      tag: v0.14.0
+      tag: v0.14.2
     nodeSelector:
       node-role.kubernetes.io/master: ""
     webhook:
       image:
         repository: quay.io/jetstack/cert-manager-webhook
-        tag: v0.14.0
+        tag: v0.14.2
       nodeSelector:
         node-role.kubernetes.io/master: ""
     cainjector:
       image:
         repository: quay.io/jetstack/cert-manager-cainjector
-        tag: v0.14.0
+        tag: v0.14.2
       nodeSelector:
         node-role.kubernetes.io/master: ""
   source:
