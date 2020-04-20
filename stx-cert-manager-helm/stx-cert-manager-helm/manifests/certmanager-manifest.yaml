@@ -50,6 +50,7 @@ data:
     nodeSelector:
       node-role.kubernetes.io/master: ""
     webhook:
+      serviceName: "cm-cert-manager-webhook"
       image:
         repository: quay.io/jetstack/cert-manager-webhook
         tag: v0.14.2
@@ -61,6 +62,10 @@ data:
         tag: v0.14.2
       nodeSelector:
         node-role.kubernetes.io/master: ""
+    acmesolver:
+      image:
+        repository: quay.io/jetstack/cert-manager-acmesolver
+        tag: v0.14.2
   source:
     type: tar
     location: http://172.17.0.1/helm_charts/stx-platform/cert-manager-v0.1.0.tgz

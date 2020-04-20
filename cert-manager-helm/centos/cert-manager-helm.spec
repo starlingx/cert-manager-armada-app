@@ -19,7 +19,7 @@ Source3: Makefile
 
 BuildArch:     noarch
 
-## Patch definition goes here if required
+Patch01: 0001-Patch-for-acmesolver.patch
 
 BuildRequires: helm
 
@@ -29,7 +29,7 @@ StarlingX Cert-Manager Helm Charts
 %prep
 %setup -n helm-charts-certmanager
 
-## Apply patches here if required
+%patch01 -p1
 
 %build
 # initialize helm and build the toolkit
