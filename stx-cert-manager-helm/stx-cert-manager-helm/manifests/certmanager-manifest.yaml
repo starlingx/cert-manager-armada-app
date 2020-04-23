@@ -2,27 +2,6 @@
 schema: armada/Chart/v1
 metadata:
   schema: metadata/Document/v1
-  name: certmgr-crds
-data:
-  chart_name: certmgr-crds
-  release: certmgr-crds
-  namespace: cert-manager
-  wait:
-    timeout: 60
-    resources: []
-  values:
-    nodeSelector:
-      node-role.kubernetes.io/master: ""
-  source:
-    type: tar
-    location: http://172.17.0.1:8080/helm_charts/stx-platform/certmgr-crds-0.1.0.tgz
-    subpath: certmgr-crds
-    reference: master
-  dependencies: []
----
-schema: armada/Chart/v1
-metadata:
-  schema: metadata/Document/v1
   name: cert-manager
 data:
   chart_name: cert-manager
@@ -44,28 +23,62 @@ data:
   values:
     global:
       imagePullSecrets: [{"name": "default-registry-key"}]
+    installCRDs: true
+    replicaCount: 1
     image:
       repository: quay.io/jetstack/cert-manager-controller
-      tag: v0.14.2
+      tag: v0.15.0-alpha.1
     nodeSelector:
       node-role.kubernetes.io/master: ""
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: app
+              operator: In
+              values:
+              - cert-manager
+          topologyKey: kubernetes.io/hostname
     webhook:
+      replicaCount: 1
       serviceName: "cm-cert-manager-webhook"
       image:
         repository: quay.io/jetstack/cert-manager-webhook
-        tag: v0.14.2
+        tag: v0.15.0-alpha.1
       nodeSelector:
         node-role.kubernetes.io/master: ""
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - webhook
+            topologyKey: kubernetes.io/hostname
     cainjector:
+      replicaCount: 1
       image:
         repository: quay.io/jetstack/cert-manager-cainjector
-        tag: v0.14.2
+        tag: v0.15.0-alpha.1
       nodeSelector:
         node-role.kubernetes.io/master: ""
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - cainjector
+            topologyKey: kubernetes.io/hostname
     acmesolver:
       image:
         repository: quay.io/jetstack/cert-manager-acmesolver
-        tag: v0.14.2
+        tag: v0.15.0-alpha.1
   source:
     type: tar
     location: http://172.17.0.1/helm_charts/stx-platform/cert-manager-v0.1.0.tgz
@@ -81,7 +94,6 @@ data:
   description: "StarlingX Cert-Manager"
   sequenced: true
   chart_group:
-    - certmgr-crds
     - cert-manager
 ---
 schema: armada/Manifest/v1

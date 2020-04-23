@@ -1,7 +1,7 @@
 # Build variables
 %global helm_folder /usr/lib/helm
 
-%global sha 8bc03dc303d0e4267e44dab0a68607f35786919e
+%global sha 49e1a7a51c71307718d29c4275bf3916906011c2
 
 Summary: Cert-Manager helm charts
 Name: cert-manager-helm
@@ -56,10 +56,18 @@ helm serve --repo-path . &
 helm repo rm local
 helm repo add local http://localhost:8879/charts
 
+# Copy CRD yaml files to templates
+cp deploy/crds/*.yaml deploy/charts/cert-manager/templates/
+
 # Create the tgz files
 cp %{SOURCE3} deploy/charts
-which make
 cd deploy/charts
+
+# In Cert-manager release-0.15, 'helm lint' fails 
+# on templates/BUILD.bazel (with invalid file extension)
+# Removing the problem file
+rm cert-manager/templates/BUILD.bazel
+
 make cert-manager
 cd -
 
