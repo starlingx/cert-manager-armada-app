@@ -8,7 +8,7 @@ data:
   release: cert-manager
   namespace: cert-manager
   wait:
-    timeout: 300
+    timeout: 1800
     labels:
       app: cert-manager
   install:
