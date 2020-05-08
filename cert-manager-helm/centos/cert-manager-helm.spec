@@ -22,6 +22,7 @@ BuildArch:     noarch
 Patch01: 0001-Patch-for-acmesolver.patch
 
 BuildRequires: helm
+BuildRequires: chartmuseum
 
 %description
 StarlingX Cert-Manager Helm Charts
@@ -32,28 +33,9 @@ StarlingX Cert-Manager Helm Charts
 %patch01 -p1
 
 %build
-# initialize helm and build the toolkit
-# helm init --client-only does not work if there is no networking
-# The following commands do essentially the same as: helm init
-%define helm_home %{getenv:HOME}/.helm
-mkdir %{helm_home}
-mkdir %{helm_home}/repository
-mkdir %{helm_home}/repository/cache
-mkdir %{helm_home}/repository/local
-mkdir %{helm_home}/plugins
-mkdir %{helm_home}/starters
-mkdir %{helm_home}/cache
-mkdir %{helm_home}/cache/archive
-
-# Stage a repository file that only has a local repo
-cp %{SOURCE1} %{helm_home}/repository/repositories.yaml
-
-# Stage a local repo index that can be updated by the build
-cp %{SOURCE2} %{helm_home}/repository/local/index.yaml
-
 # Host a server for the charts
-helm serve --repo-path . &
-helm repo rm local
+chartmuseum --debug --port=8879 --context-path='/charts' --storage="local" --storage-local-rootdir="." &
+sleep 2
 helm repo add local http://localhost:8879/charts
 
 # Copy CRD yaml files to templates
