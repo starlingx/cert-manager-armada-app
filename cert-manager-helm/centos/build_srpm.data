@@ -1,5 +1,5 @@
 TAR_NAME=helm-charts-certmanager
-SHA=49e1a7a51c71307718d29c4275bf3916906011c2
+SHA=1d6ecc9cf8d841782acb5f3d3c28467c24c5fd18
 VERSION=1.0.0
 TAR="$TAR_NAME-$SHA.tar.gz"
 

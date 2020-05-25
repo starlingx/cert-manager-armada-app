@@ -27,7 +27,7 @@ data:
     replicaCount: 1
     image:
       repository: quay.io/jetstack/cert-manager-controller
-      tag: v0.15.0-alpha.1
+      tag: v0.15.0
     nodeSelector:
       node-role.kubernetes.io/master: ""
     affinity:
@@ -45,7 +45,7 @@ data:
       serviceName: "cm-cert-manager-webhook"
       image:
         repository: quay.io/jetstack/cert-manager-webhook
-        tag: v0.15.0-alpha.1
+        tag: v0.15.0
       nodeSelector:
         node-role.kubernetes.io/master: ""
       affinity:
@@ -62,7 +62,7 @@ data:
       replicaCount: 1
       image:
         repository: quay.io/jetstack/cert-manager-cainjector
-        tag: v0.15.0-alpha.1
+        tag: v0.15.0
       nodeSelector:
         node-role.kubernetes.io/master: ""
       affinity:
@@ -78,7 +78,7 @@ data:
     acmesolver:
       image:
         repository: quay.io/jetstack/cert-manager-acmesolver
-        tag: v0.15.0-alpha.1
+        tag: v0.15.0
   source:
     type: tar
     location: http://172.17.0.1/helm_charts/stx-platform/cert-manager-v0.1.0.tgz

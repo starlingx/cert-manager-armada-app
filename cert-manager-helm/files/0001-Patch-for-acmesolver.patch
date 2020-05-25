@@ -1,12 +1,12 @@
-From ff2f5c9c0fb6f0304b2ce763fc8a8cf69e5c47d4 Mon Sep 17 00:00:00 2001
+From 9f02b5315638eaa5e1a261672c30169f5977adb8 Mon Sep 17 00:00:00 2001
 From: Sabeel Ansari <Sabeel.Ansari@windriver.com>
-Date: Thu, 23 Apr 2020 09:44:14 -0400
-Subject: [PATCH] Patch 0.15.0-alpha1 certmanager for acmesolver
+Date: Mon, 25 May 2020 10:14:33 -0400
+Subject: [PATCH] Patch for acmesolver
 
 ---
  deploy/charts/cert-manager/templates/deployment.yaml | 1 +
- deploy/charts/cert-manager/values.yaml               | 9 +++++++++
- 2 files changed, 10 insertions(+)
+ deploy/charts/cert-manager/values.yaml               | 8 ++++++++
+ 2 files changed, 9 insertions(+)
 
 diff --git a/deploy/charts/cert-manager/templates/deployment.yaml b/deploy/charts/cert-manager/templates/deployment.yaml
 index f4bda18..85177c6 100644
@@ -21,13 +21,13 @@ index f4bda18..85177c6 100644
  {{ toYaml .Values.extraArgs | indent 10 }}
          {{- end }}
 diff --git a/deploy/charts/cert-manager/values.yaml b/deploy/charts/cert-manager/values.yaml
-index 3b4aef6..bf108f8 100644
+index 40c8e59..9a3c7f8 100644
 --- a/deploy/charts/cert-manager/values.yaml
 +++ b/deploy/charts/cert-manager/values.yaml
-@@ -241,3 +241,12 @@ cainjector:
-     # If no value is set, the chart's appVersion will be used.
-     # tag: canary
-     pullPolicy: IfNotPresent
+@@ -259,3 +259,11 @@ cainjector:
+     # name: ""
+     # Optional additional annotations to add to the controller's ServiceAccount
+     # annotations: {}
 +
 +acmesolver:
 +
@@ -36,7 +36,6 @@ index 3b4aef6..bf108f8 100644
 +    # Override the image tag to deploy by setting this variable.
 +    # If no value is set, the chart's appVersion will be used.
 +    # tag: canary
-+
 -- 
 1.8.3.1
 

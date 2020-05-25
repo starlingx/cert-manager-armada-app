@@ -1,7 +1,7 @@
 # Build variables
 %global helm_folder /usr/lib/helm
 
-%global sha 49e1a7a51c71307718d29c4275bf3916906011c2
+%global sha 1d6ecc9cf8d841782acb5f3d3c28467c24c5fd18
 
 Summary: Cert-Manager helm charts
 Name: cert-manager-helm
