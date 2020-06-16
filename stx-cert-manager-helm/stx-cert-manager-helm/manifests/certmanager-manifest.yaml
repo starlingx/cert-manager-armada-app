@@ -2,6 +2,36 @@
 schema: armada/Chart/v1
 metadata:
   schema: metadata/Document/v1
+  name: cert-manager-psp-rolebinding
+data:
+  chart_name: psp-rolebinding
+  release: cert-manager-psp-rolebinding
+  namespace: cert-manager
+  values:
+    rolebindingNamespace: cert-manager
+    serviceAccount: cert-manager
+  source:
+    location: http://172.17.0.1:8080/helm_charts/stx-platform/psp-rolebinding-0.1.0.tgz
+    subpath: psp-rolebinding
+    type: tar
+    reference: master
+  upgrade:
+    no_hooks: false
+    pre:
+      delete:
+      - labels:
+          release_group: cert-manager-psp-rolebinding
+        type: job
+  wait:
+    labels:
+      release_group: cert-manager-psp-rolebinding
+    resources: []
+    timeout: 1800
+  dependencies: []
+---
+schema: armada/Chart/v1
+metadata:
+  schema: metadata/Document/v1
   name: cert-manager
 data:
   chart_name: cert-manager
@@ -95,6 +125,7 @@ data:
   sequenced: true
   chart_group:
     - cert-manager
+    - cert-manager-psp-rolebinding
 ---
 schema: armada/Manifest/v1
 metadata:

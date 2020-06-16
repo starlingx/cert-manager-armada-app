@@ -5,3 +5,7 @@ SRC_DIR="stx-cert-manager-helm"
 TIS_BASE_SRCREV=94d4c26f982e2e8c222517900c504580d1e3a09d
 TIS_PATCH_VER=GITREVCOUNT
 
+COPY_LIST_TO_TAR="\
+    $STX_BASE/helm-charts/psp-rolebinding/psp-rolebinding/helm-charts \
+"
+
