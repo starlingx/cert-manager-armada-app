@@ -70,6 +70,11 @@ data:
               values:
               - cert-manager
           topologyKey: kubernetes.io/hostname
+    strategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 1
     webhook:
       replicaCount: 1
       serviceName: "cm-cert-manager-webhook"
@@ -88,6 +93,11 @@ data:
                 values:
                 - webhook
             topologyKey: kubernetes.io/hostname
+      strategy:
+        type: RollingUpdate
+        rollingUpdate:
+          maxSurge: 1
+          maxUnavailable: 1
     cainjector:
       replicaCount: 1
       image:
@@ -105,6 +115,11 @@ data:
                 values:
                 - cainjector
             topologyKey: kubernetes.io/hostname
+      strategy:
+        type: RollingUpdate
+        rollingUpdate:
+          maxSurge: 1
+          maxUnavailable: 1
     acmesolver:
       image:
         repository: quay.io/jetstack/cert-manager-acmesolver
