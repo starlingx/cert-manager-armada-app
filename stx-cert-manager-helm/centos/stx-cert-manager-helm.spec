@@ -26,7 +26,6 @@ BuildRequires: chartmuseum
 BuildRequires: cert-manager-helm
 BuildRequires: python-k8sapp-cert-manager
 BuildRequires: python-k8sapp-cert-manager-wheels
-Requires: cert-manager-helm
 
 %description
 StarlingX Cert-Manager Armada Helm Charts
