@@ -7,6 +7,9 @@ helm_repo: @HELM_REPO@
 behavior:
   platform_managed_app: yes
   desired_state: applied
+  forbidden_manual_operations:
+    - delete
+    - remove
   evaluate_reapply:
     triggers:
       - type: runtime-apply-puppet
