@@ -75,6 +75,8 @@ data:
       rollingUpdate:
         maxSurge: 1
         maxUnavailable: 1
+    extraArgs:
+      - --enable-certificate-owner-ref=true
     webhook:
       replicaCount: 1
       serviceName: "cm-cert-manager-webhook"
