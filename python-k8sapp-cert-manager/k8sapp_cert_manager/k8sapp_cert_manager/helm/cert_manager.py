@@ -34,12 +34,12 @@ class CertMgrHelm(base.BaseHelm):
 
         overrides = {
             common.HELM_NS_CERT_MANAGER: {
-                'replicaCount': max(1, self._num_provisioned_controllers()),
+                'replicaCount': self._num_replicas_for_platform_app(),
                 'webhook': {
-                    'replicaCount': max(1, self._num_provisioned_controllers()),
+                    'replicaCount': self._num_replicas_for_platform_app(),
                 },
                 'cainjector': {
-                    'replicaCount': max(1, self._num_provisioned_controllers()),
+                    'replicaCount': self._num_replicas_for_platform_app(),
                 },
             }
         }
