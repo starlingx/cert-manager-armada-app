@@ -67,6 +67,7 @@
 
 - job:
     name: k8sapp-cert-mgr-tox-pylint
+    nodeset: ubuntu-bionic
     parent: tox
     description: |
       Run pylint test for k8sapp-cert-manager
