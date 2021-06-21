@@ -9,6 +9,7 @@ behavior:
   desired_state: applied
   forbidden_manual_operations:
     - delete
+    - remove
   evaluate_reapply:
     triggers:
       - type: runtime-apply-puppet
