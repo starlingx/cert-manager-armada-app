@@ -9,3 +9,7 @@ COPY_LIST_TO_TAR="\
     $STX_BASE/helm-charts/psp-rolebinding/psp-rolebinding/helm-charts \
 "
 
+OPT_DEP_LIST="\
+    $STX_BASE/cert-manager-armada-app/python-k8sapp-cert-manager \
+    $STX_BASE/cert-manager-armada-app/cert-manager-helm \
+"

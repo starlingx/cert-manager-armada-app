@@ -5,4 +5,6 @@ TAR="$TAR_NAME-$SHA.tar.gz"
 
 COPY_LIST="${CGCS_BASE}/downloads/$TAR $PKG_BASE/files/* "
 
+OPT_DEP_LIST="$STX_BASE/cert-manager-armada-app/stx-cert-manager-helm"
+
 TIS_PATCH_VER=PKG_GITREVCOUNT
