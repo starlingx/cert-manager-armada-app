@@ -1,7 +1,7 @@
 #
 # Copyright 2017 The Openstack-Helm Authors.
 #
-# Copyright (c) 2018 Wind River Systems, Inc.
+# Copyright (c) 2020 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
