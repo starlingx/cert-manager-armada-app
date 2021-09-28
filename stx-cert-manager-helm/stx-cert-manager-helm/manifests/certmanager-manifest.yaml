@@ -70,6 +70,10 @@ data:
               values:
               - cert-manager
           topologyKey: kubernetes.io/hostname
+    tolerations:
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+        effect: "NoSchedule"
     strategy:
       type: RollingUpdate
       rollingUpdate:
@@ -95,6 +99,10 @@ data:
                 values:
                 - webhook
             topologyKey: kubernetes.io/hostname
+      tolerations:
+        - key: "node-role.kubernetes.io/master"
+          operator: "Exists"
+          effect: "NoSchedule"
       strategy:
         type: RollingUpdate
         rollingUpdate:
@@ -117,6 +125,10 @@ data:
                 values:
                 - cainjector
             topologyKey: kubernetes.io/hostname
+      tolerations:
+        - key: "node-role.kubernetes.io/master"
+          operator: "Exists"
+          effect: "NoSchedule"
       strategy:
         type: RollingUpdate
         rollingUpdate:
