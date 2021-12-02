@@ -1,5 +1,2 @@
 usr/lib/python3/dist-packages/k8sapp_cert_manager-1.0.0.egg-info/*
-usr/lib/python3/dist-packages/k8sapp_cert_manager/*.py
-usr/lib/python3/dist-packages/k8sapp_cert_manager/common/*.py
-usr/lib/python3/dist-packages/k8sapp_cert_manager/helm/*.py
-usr/lib/python3/dist-packages/k8sapp_cert_manager/tests/*.py
+usr/lib/python3/dist-packages/k8sapp_cert_manager/*
