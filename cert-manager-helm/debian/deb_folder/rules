@@ -3,11 +3,13 @@
 
 export ROOT = debian/tmp
 export CHART_FOLDER = $(ROOT)/usr/lib/helm
+export CERT_MGR_PKG="helm-charts-certmanager-1d6ecc9cf8d841782acb5f3d3c28467c24c5fd18.tar.gz"
 
 %:
 	dh $@
 
 override_dh_auto_build:
+	tar xzf $(CERT_MGR_PKG)
 	# Move the extracted helm chart files to the top level build directory.
 	# Remove the helm-charts-certmanager Makefile first so it doesn't overwrite
 	# our Makefile.
