@@ -1,7 +1,12 @@
 ---
 debname: stx-cert-manager-helm
 debver: 1.0-1
-dl_hook: dl_hook
+src_path: null
+src_files:
+  - ${MY_REPO}/stx/helm-charts/psp-rolebinding/psp-rolebinding/helm-charts
+  - stx-cert-manager-helm/files
+  - stx-cert-manager-helm/helm-charts
+  - stx-cert-manager-helm/manifests
 revision:
   dist: $STX_DIST
   PKG_GITREVCOUNT: true
