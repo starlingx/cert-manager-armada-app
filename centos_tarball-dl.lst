@@ -1,1 +1,2 @@
 helm-charts-certmanager-1d6ecc9cf8d841782acb5f3d3c28467c24c5fd18.tar.gz#helm-charts-certmanager#https://github.com/jetstack/cert-manager/archive/1d6ecc9cf8d841782acb5f3d3c28467c24c5fd18.tar.gz#http##
+helm-charts-certmanager-1.7.1.tar.gz#helm-charts#https://github.com/cert-manager/cert-manager/archive/refs/tags/v1.7.1.tar.gz#http##

@@ -5,6 +5,18 @@ SRC_DIR="stx-cert-manager-helm"
 TIS_BASE_SRCREV=94d4c26f982e2e8c222517900c504580d1e3a09d
 TIS_PATCH_VER=GITREVCOUNT
 
+TAR_NAME=helm-charts-certmanager
+
+# Armada version
+SHA=1d6ecc9cf8d841782acb5f3d3c28467c24c5fd18
+ARMADA_TAR="$TAR_NAME-$SHA.tar.gz"
+
+# FluxCD version
+CM_VERSION=1.7.1
+FLUXCD_TAR="$TAR_NAME-$CM_VERSION.tar.gz"
+
+COPY_LIST="${CGCS_BASE}/downloads/$ARMADA_TAR ${CGCS_BASE}/downloads/$FLUXCD_TAR $PKG_BASE/$SRC_DIR/files/* $PKG_BASE/$SRC_DIR/manifests/* $PKG_BASE/$SRC_DIR/fluxcd-manifests/*"
+
 COPY_LIST_TO_TAR="\
     $STX_BASE/helm-charts/psp-rolebinding/psp-rolebinding/helm-charts \
 "

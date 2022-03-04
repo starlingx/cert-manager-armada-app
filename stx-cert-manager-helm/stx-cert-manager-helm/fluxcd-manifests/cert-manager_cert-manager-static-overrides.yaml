@@ -1,0 +1,97 @@
+#
+# Copyright (c) 2022 Wind River Systems, Inc.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+global:
+  imagePullSecrets: [{"name": "default-registry-key"}]
+installCRDs: true
+replicaCount: 1
+image:
+  repository: quay.io/jetstack/cert-manager-controller
+  tag: v1.7.1
+nodeSelector:
+  node-role.kubernetes.io/master: ""
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+    - labelSelector:
+        matchExpressions:
+        - key: app
+          operator: In
+          values:
+          - cert-manager
+      topologyKey: kubernetes.io/hostname
+tolerations:
+  - key: "node-role.kubernetes.io/master"
+    operator: "Exists"
+    effect: "NoSchedule"
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 1
+extraArgs:
+  - --enable-certificate-owner-ref=true
+webhook:
+  replicaCount: 1
+  serviceName: "cm-cert-manager-webhook"
+  image:
+    repository: quay.io/jetstack/cert-manager-webhook
+    tag: v1.7.1
+  nodeSelector:
+    node-role.kubernetes.io/master: ""
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app
+            operator: In
+            values:
+            - webhook
+        topologyKey: kubernetes.io/hostname
+  tolerations:
+    - key: "node-role.kubernetes.io/master"
+      operator: "Exists"
+      effect: "NoSchedule"
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+cainjector:
+  replicaCount: 1
+  image:
+    repository: quay.io/jetstack/cert-manager-cainjector
+    tag: v1.7.1
+  nodeSelector:
+    node-role.kubernetes.io/master: ""
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app
+            operator: In
+            values:
+            - cainjector
+        topologyKey: kubernetes.io/hostname
+  tolerations:
+    - key: "node-role.kubernetes.io/master"
+      operator: "Exists"
+      effect: "NoSchedule"
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+acmesolver:
+  image:
+    repository: quay.io/jetstack/cert-manager-acmesolver
+    tag: v1.7.1
+---
+#Values for cert-manager-psp-rolebinding
+rolebindingNamespace: cert-manager
+serviceAccount: cert-manager
