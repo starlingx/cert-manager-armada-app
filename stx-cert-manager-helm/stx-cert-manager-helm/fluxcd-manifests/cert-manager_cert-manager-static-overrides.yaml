@@ -91,7 +91,11 @@ acmesolver:
   image:
     repository: quay.io/jetstack/cert-manager-acmesolver
     tag: v1.7.1
----
-#Values for cert-manager-psp-rolebinding
-rolebindingNamespace: cert-manager
-serviceAccount: cert-manager
+startupapicheck:
+  tolerations:
+    - key: "node-role.kubernetes.io/master"
+      operator: "Exists"
+      effect: "NoSchedule"
+  image:
+    repository: quay.io/jetstack/cert-manager-ctl
+    tag: v1.7.1

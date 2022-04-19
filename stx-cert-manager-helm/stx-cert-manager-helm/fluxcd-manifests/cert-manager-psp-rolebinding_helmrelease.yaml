@@ -7,15 +7,15 @@
 apiVersion: "helm.toolkit.fluxcd.io/v2beta1"
 kind: HelmRelease
 metadata:
-  name: cert-manager
+  name: psp-rolebinding
   labels:
     chart_group: cert-manager
 spec:
-  releaseName: cm-cert-manager
+  releaseName: cm-cert-manager-psp-rolebinding
   chart:
     spec:
-      chart: cert-manager
-      version: v1.7.1
+      chart: psp-rolebinding
+      version: 0.1.0
       sourceRef:
         kind: HelmRepository
         name: stx-platform
@@ -30,8 +30,8 @@ spec:
     force: true
   valuesFrom:
     - kind: Secret
-      name: cert-manager-static-overrides
-      valuesKey: cert-manager-static-overrides.yaml
+      name: cert-manager-psp-rolebinding-static-overrides
+      valuesKey: cert-manager-psp-rolebinding-static-overrides.yaml
     - kind: Secret
-      name: cert-manager-system-overrides
-      valuesKey: cert-manager-system-overrides.yaml
+      name: cert-manager-psp-rolebinding-system-overrides
+      valuesKey: cert-manager-psp-rolebinding-system-overrides.yaml

@@ -10,7 +10,8 @@
 
 %global fluxcd_cm_version 1.7.1
 
-Summary: StarlingX Cert-Manager Armada Helm Charts
+Summary: StarlingX Cert-Manager Application FluxCD Helm Charts
+#StarlingX Cert-Manager Armada Helm Charts
 Name: stx-cert-manager-helm
 Version: 1.0
 Release: %{tis_patch_ver}%{?_tis_dist}
@@ -33,6 +34,10 @@ Source10: cert-manager_helmrelease.yaml
 Source11: cert-manager_kustomization.yaml
 Source12: cert-manager_cert-manager-static-overrides.yaml
 Source13: cert-manager_cert-manager-system-overrides.yaml
+Source14: cert-manager-psp-rolebinding_cert-manager-psp-rolebinding-static-overrides.yaml
+Source15: cert-manager-psp-rolebinding_cert-manager-psp-rolebinding-system-overrides.yaml
+Source16: cert-manager-psp-rolebinding_helmrelease.yaml
+Source17: cert-manager-psp-rolebinding_kustomization.yaml
 
 BuildArch: noarch
 
@@ -43,14 +48,6 @@ BuildRequires: python-k8sapp-cert-manager
 BuildRequires: python-k8sapp-cert-manager-wheels
 
 %description
-StarlingX Cert-Manager Armada Helm Charts
-
-%package fluxcd
-Summary: StarlingX Cert-Manager Application FluxCD Helm Charts
-Group: base
-License: Apache-2.0
-
-%description fluxcd
 StarlingX Cert-Manager Application FluxCD Helm Charts
 
 %prep
@@ -100,8 +97,7 @@ kill %1
 
 # Create a chart tarball compliant with sysinv kube-app.py
 %define app_staging %{_builddir}/staging
-%define app_tarball_armada %{app_name}-%{version}-%{tis_patch_ver}.tgz
-%define app_tarball_fluxcd %{app_name}-fluxcd-%{version}-%{tis_patch_ver}.tgz
+%define app_tarball_fluxcd %{app_name}-%{version}-%{tis_patch_ver}.tgz
 
 # Setup staging
 cd %{_builddir}/helm-charts-certmanager-%{version}
@@ -122,10 +118,6 @@ sed -i 's/@HELM_REPO@/%{helm_repo}/g' %{app_staging}/metadata.yaml
 mkdir -p %{app_staging}/plugins
 cp /plugins/%{app_name}/*.whl %{app_staging}/plugins
 
-# package armada
-find . -type f ! -name '*.md5' -print0 | xargs -0 md5sum > checksum.md5
-tar -zcf %{_builddir}/%{app_tarball_armada} -C %{app_staging}/ .
-
 # package fluxcd
 rm -f %{app_staging}/certmanager-manifest.yaml
 rm -f %{app_staging}/charts/*.tgz
@@ -135,7 +127,7 @@ fluxcd_dest=%{app_staging}/fluxcd-manifests
 mkdir -p $fluxcd_dest
 cp %{SOURCE6} %{app_staging}/fluxcd-manifests
 cd %{_sourcedir}
-directories="base cert-manager"
+directories="base cert-manager cert-manager-psp-rolebinding"
 for dir in $directories;
 do
   mkdir -p $dir
@@ -155,13 +147,8 @@ rm -fr %{app_staging}
 
 %install
 install -d -m 755 %{buildroot}/%{app_folder}
-install -p -D -m 755 %{_builddir}/%{app_tarball_armada} %{buildroot}/%{app_folder}
 install -p -D -m 755 %{_builddir}/%{app_tarball_fluxcd} %{buildroot}/%{app_folder}
 
 %files
-%defattr(-,root,root,-)
-%{app_folder}/%{app_tarball_armada}
-
-%files fluxcd
 %defattr(-,root,root,-)
 %{app_folder}/%{app_tarball_fluxcd}
