@@ -26,18 +26,6 @@ Source1: Makefile
 # fluxcd specific source items
 Source4: 0001-Patch-for-acmesolver-and-chartyaml-cm-v1.7.1.patch
 Source5: helm-charts-certmanager-%{fluxcd_cm_version}.tar.gz
-Source6: kustomization.yaml
-Source7: base_helmrepository.yaml
-Source8: base_kustomization.yaml
-Source9: base_namespace.yaml
-Source10: cert-manager_helmrelease.yaml
-Source11: cert-manager_kustomization.yaml
-Source12: cert-manager_cert-manager-static-overrides.yaml
-Source13: cert-manager_cert-manager-system-overrides.yaml
-Source14: cert-manager-psp-rolebinding_cert-manager-psp-rolebinding-static-overrides.yaml
-Source15: cert-manager-psp-rolebinding_cert-manager-psp-rolebinding-system-overrides.yaml
-Source16: cert-manager-psp-rolebinding_helmrelease.yaml
-Source17: cert-manager-psp-rolebinding_kustomization.yaml
 
 BuildArch: noarch
 
@@ -123,20 +111,10 @@ rm -f %{app_staging}/certmanager-manifest.yaml
 rm -f %{app_staging}/charts/*.tgz
 cp %{_builddir}/fluxcd/helm-charts/deploy/charts/*.tgz %{app_staging}/charts
 cp %{_builddir}/helm-charts-certmanager-%{version}/helm-charts/psp*.tgz %{app_staging}/charts
-fluxcd_dest=%{app_staging}/fluxcd-manifests
-mkdir -p $fluxcd_dest
-cp %{SOURCE6} %{app_staging}/fluxcd-manifests
-cd %{_sourcedir}
-directories="base cert-manager cert-manager-psp-rolebinding"
-for dir in $directories;
-do
-  mkdir -p $dir
-  prefix="${dir}_"
-  for file in ${dir}_*; do
-    mv $file $dir/"${file#$prefix}"
-  done
-  cp -r $dir $fluxcd_dest
-done
+
+cd %{_builddir}/helm-charts-certmanager-%{version}
+cp -Rv fluxcd-manifests %{app_staging}/
+
 cd -
 
 find . -type f ! -name '*.md5' -print0 | xargs -0 md5sum > checksum.md5
