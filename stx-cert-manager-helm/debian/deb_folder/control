@@ -16,6 +16,6 @@ Package: stx-cert-manager-helm
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}
-Description: StarlingX Cert-Manager Armada/FluxCD Helm Charts
- This package contains Armada/FluxCD helm charts for the certificate manager
+Description: StarlingX Cert-Manager FluxCD Helm Charts
+ This package contains FluxCD helm charts for the certificate manager
  application.

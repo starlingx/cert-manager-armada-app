@@ -8,10 +8,9 @@
 # Build variables
 %global helm_folder /usr/lib/helm
 
-%global fluxcd_cm_version 1.7.1
+%global cm_version 1.7.1
 
 Summary: StarlingX Cert-Manager Application FluxCD Helm Charts
-#StarlingX Cert-Manager Armada Helm Charts
 Name: stx-cert-manager-helm
 Version: 1.0
 Release: %{tis_patch_ver}%{?_tis_dist}
@@ -22,16 +21,13 @@ URL: unknown
 
 Source0: helm-charts-certmanager-%{version}.tar.gz
 Source1: Makefile
-
-# fluxcd specific source items
-Source4: 0001-Patch-for-acmesolver-and-chartyaml-cm-v1.7.1.patch
-Source5: helm-charts-certmanager-%{fluxcd_cm_version}.tar.gz
+Source2: 0001-Patch-for-acmesolver-and-chartyaml-cm-v1.7.1.patch
+Source3: helm-charts-certmanager-%{cm_version}.tar.gz
 
 BuildArch: noarch
 
 BuildRequires: helm
 BuildRequires: chartmuseum
-BuildRequires: cert-manager-helm
 BuildRequires: python-k8sapp-cert-manager
 BuildRequires: python-k8sapp-cert-manager-wheels
 
@@ -47,54 +43,55 @@ chartmuseum --debug --port=8879 --context-path='/charts' --storage="local" --sto
 sleep 2
 helm repo add local http://localhost:8879/charts
 
-# Make the charts. These produce a tgz file
+# Make psp-rolebinding chart. These produce a tgz file
 cd helm-charts
 make psp-rolebinding
 cd -
 
-# set up fluxcd tar source
+# Extract the cert-manager chart
 cd %{_builddir}
 rm -rf fluxcd
 /usr/bin/mkdir -p fluxcd
 cd fluxcd
-/usr/bin/tar xfv /builddir/build/SOURCES/helm-charts-certmanager-%{fluxcd_cm_version}.tar.gz
+/usr/bin/tar xfv %{SOURCE3}
 
+# Apply patches with our modifications
 cd %{_builddir}/fluxcd/helm-charts
-cp %{SOURCE4} .
-patch -p1 < %{SOURCE4}
-rm -f deploy/charts/cert-manager/templates/deployment.yaml.orig
+cp %{SOURCE2} .
+patch -p1 < %{SOURCE2}
 
 # Copy CRD yaml files to templates
 cp deploy/crds/*.yaml deploy/charts/cert-manager/templates/
 
-# Create the tgz files
-cp %{SOURCE1} deploy/charts
+# Copy Makefile
 cd deploy/charts
+cp %{SOURCE1} .
 
-# In Cert-manager release, 'helm lint' fails
-# on templates/BUILD.bazel (with invalid file extension)
-# Removing the problem file
+# Remove files causing lint error from cert-manager release
 rm cert-manager/templates/BUILD.bazel
+rm cert-manager/templates/deployment.yaml.orig
 
+# Make the updated cert-manager helm-chart
 make cert-manager
-mv *.tgz %{app_name}-fluxcd-%{version}-%{tis_patch_ver}.tgz
+mv *.tgz %{app_name}-%{version}-%{tis_patch_ver}.tgz
 cd -
 
-# terminate helm server (the last backgrounded task)
+# Terminate helm server (the last background task)
 kill %1
 
 # Create a chart tarball compliant with sysinv kube-app.py
 %define app_staging %{_builddir}/staging
-%define app_tarball_fluxcd %{app_name}-%{version}-%{tis_patch_ver}.tgz
+%define app_tarball %{app_name}-%{version}-%{tis_patch_ver}.tgz
 
-# Setup staging
+# Setup the staging directory
 cd %{_builddir}/helm-charts-certmanager-%{version}
 mkdir -p %{app_staging}
 cp files/metadata.yaml %{app_staging}
-cp manifests/*.yaml %{app_staging}
 mkdir -p %{app_staging}/charts
-cp helm-charts/*.tgz %{app_staging}/charts
-cp %{helm_folder}/cert*.tgz %{app_staging}/charts
+cp %{_builddir}/fluxcd/helm-charts/deploy/charts/*.tgz %{app_staging}/charts
+cp %{_builddir}/helm-charts-certmanager-%{version}/helm-charts/psp*.tgz %{app_staging}/charts
+cp -Rv fluxcd-manifests %{app_staging}/
+
 cd %{app_staging}
 
 # Populate metadata
@@ -106,27 +103,18 @@ sed -i 's/@HELM_REPO@/%{helm_repo}/g' %{app_staging}/metadata.yaml
 mkdir -p %{app_staging}/plugins
 cp /plugins/%{app_name}/*.whl %{app_staging}/plugins
 
-# package fluxcd
-rm -f %{app_staging}/certmanager-manifest.yaml
-rm -f %{app_staging}/charts/*.tgz
-cp %{_builddir}/fluxcd/helm-charts/deploy/charts/*.tgz %{app_staging}/charts
-cp %{_builddir}/helm-charts-certmanager-%{version}/helm-charts/psp*.tgz %{app_staging}/charts
-
-cd %{_builddir}/helm-charts-certmanager-%{version}
-cp -Rv fluxcd-manifests %{app_staging}/
-
+# Generate checksum file and package the tarball
 cd -
-
 find . -type f ! -name '*.md5' -print0 | xargs -0 md5sum > checksum.md5
-tar -zcf %{_builddir}/%{app_tarball_fluxcd} -C %{app_staging}/ .
+tar -zcf %{_builddir}/%{app_tarball} -C %{app_staging}/ .
 
 # Cleanup staging
 rm -fr %{app_staging}
 
 %install
 install -d -m 755 %{buildroot}/%{app_folder}
-install -p -D -m 755 %{_builddir}/%{app_tarball_fluxcd} %{buildroot}/%{app_folder}
+install -p -D -m 755 %{_builddir}/%{app_tarball} %{buildroot}/%{app_folder}
 
 %files
 %defattr(-,root,root,-)
-%{app_folder}/%{app_tarball_fluxcd}
+%{app_folder}/%{app_tarball}

@@ -1,10 +1,10 @@
 # StarlingX/Cert-Manager-Armada-App
 
 ## Introduction
-[Cert-Manager](https://cert-manager.io/) is Kubernetes native application that facilities certificate management. This repository deploys Cert-Manager as a platform-managed application using Armada Helm Charts for the StarlingX project.
+[Cert-Manager](https://cert-manager.io/) is Kubernetes native application that facilities certificate management. This repository deploys Cert-Manager as a platform-managed application using FluxCD Helm Charts for the StarlingX project.
 
 ## Build
-The build tools available as indepdendent repositories under the StarlingX project are necessary to build this  Armada chart.
+The build tools available as independent repositories under the StarlingX project are necessary to build this application.
 
 See [StarlingX Build Guide](https://docs.starlingx.io/developer_resources/build_guide.html) for more details.
 
