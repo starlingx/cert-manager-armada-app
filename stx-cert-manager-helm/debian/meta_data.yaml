@@ -14,4 +14,6 @@ dl_files:
     md5sum: 5e3db9fc3aed832e69ddd50d608260a5
 revision:
   dist: $STX_DIST
-  PKG_GITREVCOUNT: true
+  GITREVCOUNT:
+    SRC_DIR: ${MY_REPO}/stx/cert-manager-armada-app
+    BASE_SRCREV: df8fc0aa19972d84f0198ad5beff3bbcd654844b
