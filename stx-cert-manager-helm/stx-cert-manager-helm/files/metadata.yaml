@@ -19,3 +19,4 @@ behavior:
       - type: host-delete
         filters:
           - personality: controller
+      - type: kube-upgrade-complete
