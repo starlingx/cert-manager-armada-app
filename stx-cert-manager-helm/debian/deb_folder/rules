@@ -5,11 +5,12 @@ export ROOT = debian/tmp
 export APP_FOLDER = $(ROOT)/usr/local/share/applications/helm
 
 export DEB_VERSION = $(shell dpkg-parsechangelog | egrep '^Version:' | cut -f 2 -d ' ')
-export MAJOR = $(shell echo $(DEB_VERSION) | cut -f 1 -d '.')
-export MINOR_PATCH = $(shell echo $(DEB_VERSION) | cut -f 2 -d '.')
+export MAJOR = $(shell echo $(DEB_VERSION) | cut -f 1 -d '-')
+export MINOR_PATCH = $(shell echo $(DEB_VERSION) | cut -f 4 -d '.')
+
 
 export APP_NAME = cert-manager
-export APP_VERSION = $(MAJOR).$(MINOR_PATCH)
+export APP_VERSION = $(MAJOR)-$(MINOR_PATCH)
 export APP_TARBALL = $(APP_NAME)-$(APP_VERSION).tgz
 export HELM_REPO = stx-platform
 export STAGING = staging
