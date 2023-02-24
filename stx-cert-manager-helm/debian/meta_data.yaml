@@ -1,12 +1,9 @@
 ---
 debname: stx-cert-manager-helm
 debver: 1.0-1
-src_path: null
+src_path: stx-cert-manager-helm
 src_files:
   - ${MY_REPO}/stx/helm-charts/psp-rolebinding/psp-rolebinding/helm-charts
-  - stx-cert-manager-helm/files
-  - stx-cert-manager-helm/helm-charts
-  - stx-cert-manager-helm/fluxcd-manifests
 dl_files:
   helm-charts-certmanager-1.7.1.tar.gz:
     topdir: helm-charts
@@ -14,6 +11,9 @@ dl_files:
     md5sum: 5e3db9fc3aed832e69ddd50d608260a5
 revision:
   dist: $STX_DIST
-  GITREVCOUNT:
-    SRC_DIR: ${MY_REPO}/stx/cert-manager-armada-app
-    BASE_SRCREV: df8fc0aa19972d84f0198ad5beff3bbcd654844b
+  stx_patch: 28
+  PKG_GITREVCOUNT: true
+  SRC_GITREVCOUNT:
+    SRC_BASE_SRCREV: afd731d65d1966fadec6128575efb92414fa26ab
+  FILES_GITREVCOUNT:
+    - 78cacfb0d7a9a625699fcad0b18d83f5cb455b44
