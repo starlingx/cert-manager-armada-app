@@ -3,37 +3,18 @@
     check:
       jobs:
         - openstack-tox-linters
-        - k8sapp-cert-mgr-tox-py27
         - k8sapp-cert-mgr-tox-flake8
         - k8sapp-cert-mgr-tox-pylint
         - k8sapp-cert-mgr-tox-bandit
     gate:
       jobs:
         - openstack-tox-linters
-        - k8sapp-cert-mgr-tox-py27
         - k8sapp-cert-mgr-tox-flake8
         - k8sapp-cert-mgr-tox-pylint
         - k8sapp-cert-mgr-tox-bandit
     post:
       jobs:
         - stx-cert-manager-armada-app-upload-git-mirror
-
-- job:
-    name: k8sapp-cert-mgr-tox-py27
-    parent: tox
-    description: |
-      Run py27 test for k8sapp-cert-manager
-    nodeset: ubuntu-xenial
-    required-projects:
-      - starlingx/config
-      - starlingx/fault
-      - starlingx/update
-      - starlingx/utilities
-    files:
-      - python3-k8sapp-cert-manager/*
-    vars:
-      tox_envlist: py27
-      tox_extra_args: -c python3-k8sapp-cert-manager/k8sapp_cert_manager/tox.ini
 
 - job:
     name: k8sapp-cert-mgr-tox-flake8
