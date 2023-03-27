@@ -2,8 +2,6 @@
 debname: stx-cert-manager-helm
 debver: 1.0-1
 src_path: stx-cert-manager-helm
-src_files:
-  - ${MY_REPO}/stx/helm-charts/psp-rolebinding/psp-rolebinding/helm-charts
 dl_files:
   helm-charts-certmanager-1.7.1.tar.gz:
     topdir: helm-charts
@@ -15,5 +13,3 @@ revision:
   PKG_GITREVCOUNT: true
   SRC_GITREVCOUNT:
     SRC_BASE_SRCREV: afd731d65d1966fadec6128575efb92414fa26ab
-  FILES_GITREVCOUNT:
-    - 78cacfb0d7a9a625699fcad0b18d83f5cb455b44

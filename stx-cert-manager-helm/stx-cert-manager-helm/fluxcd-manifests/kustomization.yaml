@@ -10,4 +10,3 @@ namespace: cert-manager
 resources:
   - base
   - cert-manager
-  - cert-manager-psp-rolebinding
