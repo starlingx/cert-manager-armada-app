@@ -11,6 +11,8 @@ replicaCount: 1
 image:
   repository: quay.io/jetstack/cert-manager-controller
   tag: v1.7.1
+podLabels:
+  app.starlingx.io/component: "platform"
 nodeSelector:
   node-role.kubernetes.io/control-plane: ""
 affinity:
@@ -43,6 +45,8 @@ webhook:
   image:
     repository: quay.io/jetstack/cert-manager-webhook
     tag: v1.7.1
+  podLabels:
+    app.starlingx.io/component: "platform"
   nodeSelector:
     node-role.kubernetes.io/control-plane: ""
   affinity:
@@ -72,6 +76,8 @@ cainjector:
   image:
     repository: quay.io/jetstack/cert-manager-cainjector
     tag: v1.7.1
+  podLabels:
+    app.starlingx.io/component: "platform"
   nodeSelector:
     node-role.kubernetes.io/control-plane: ""
   affinity:

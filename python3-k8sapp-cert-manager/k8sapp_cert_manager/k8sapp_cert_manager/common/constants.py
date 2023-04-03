@@ -6,4 +6,7 @@
 
 # Helm: Supported charts:
 # These values match the names in the chart package's Chart.yaml
+HELM_APP_CERT_MANAGER = 'cert-manager'
 HELM_CHART_CERT_MANAGER = 'cert-manager'
+HELM_CHART_NS_CERT_MANAGER = 'cert-manager'
+HELM_CHART_COMPONENT_LABEL = 'app.starlingx.io/component'
