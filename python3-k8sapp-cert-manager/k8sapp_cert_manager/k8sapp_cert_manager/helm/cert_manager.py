@@ -17,6 +17,8 @@ from sysinv.helm import common
 
 from sysinv.db import api as dbapi
 
+from kubernetes.client.rest import ApiException
+
 import yaml
 
 LOG = logging.getLogger(__name__)
@@ -135,13 +137,16 @@ class CertMgrHelm(base.BaseHelm):
                 pod_desc = kube_client.kube_get_pods_by_selector(
                     app_constants.HELM_CHART_NS_CERT_MANAGER,
                     "app=%s" % pod_name, "")
+                if not pod_desc:
+                    current_pod_labels = {}
+                    break
                 for label, value in pod_desc[0].metadata.labels.items():
                     item = {label: value}
                     if item in self.SUPPORTED_COMPONENT_LABELS:
                         current_pod_labels[pod_name] = item
-        except exception.HelmOverrideNotFound:
-            LOG.debug("Can not read pods's labels. Default value will be used\
-                       instead for label overrides.")
+        except ApiException as e:
+            LOG.info("Can not read pods's labels. Default value will be used\
+                       instead for label overrides. Exception: %s" % e)
         finally:
             if not current_pod_labels:
                 current_pod_labels = self.DEFAULT_LABEL_OVERRIDES
