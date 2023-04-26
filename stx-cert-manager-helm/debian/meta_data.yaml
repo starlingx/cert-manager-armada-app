@@ -3,10 +3,10 @@ debname: stx-cert-manager-helm
 debver: 1.0-1
 src_path: stx-cert-manager-helm
 dl_files:
-  helm-charts-certmanager-1.7.1.tar.gz:
+  helm-charts-certmanager-1.11.1.tar.gz:
     topdir: helm-charts
-    url: https://github.com/cert-manager/cert-manager/archive/refs/tags/v1.7.1.tar.gz
-    md5sum: 5e3db9fc3aed832e69ddd50d608260a5
+    url: https://github.com/cert-manager/cert-manager/archive/refs/tags/v1.11.1.tar.gz
+    md5sum: 7e8d0ea423a0f631e9f8f86476bc8ebd
 revision:
   dist: $STX_DIST
   stx_patch: 28

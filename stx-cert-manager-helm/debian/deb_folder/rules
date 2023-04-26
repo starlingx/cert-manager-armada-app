@@ -15,8 +15,8 @@ export APP_TARBALL = $(APP_NAME)-$(APP_VERSION).tgz
 export HELM_REPO = stx-platform
 export STAGING = staging
 
-export CM_VERSION = 1.7.1
-export PATCH_1 = 0001-Patch-for-acmesolver-and-chartyaml-cm-v1.7.1.patch
+export PATCH_1 = 0001-Patch-for-chartyaml-cm-v1.11.1.patch
+export CM_VERSION = 1.11.1
 
 %:
 	dh $@
@@ -39,9 +39,6 @@ override_dh_auto_build:
 	patch -p1 < $(PATCH_1) ; \
 	# Copy CRD yaml files to templates ; \
 	cp deploy/crds/*.yaml deploy/charts/cert-manager/templates/ ; \
-	# Remove files causing lint error ; \
-	cd deploy/charts/cert-manager ; \
-	rm templates/BUILD.bazel templates/deployment.yaml.orig
 
 	# Make the updated cert-manager helm-chart
 	cp files/Makefile fluxcd/helm-charts/deploy/charts
