@@ -10,7 +10,7 @@ installCRDs: true
 replicaCount: 1
 image:
   repository: quay.io/jetstack/cert-manager-controller
-  tag: v1.11.1
+  tag: v1.13.1
 podLabels:
   app.starlingx.io/component: "platform"
 nodeSelector:
@@ -44,7 +44,7 @@ webhook:
   serviceName: "cm-cert-manager-webhook"
   image:
     repository: quay.io/jetstack/cert-manager-webhook
-    tag: v1.11.1
+    tag: v1.13.1
   podLabels:
     app.starlingx.io/component: "platform"
   nodeSelector:
@@ -75,7 +75,7 @@ cainjector:
   replicaCount: 1
   image:
     repository: quay.io/jetstack/cert-manager-cainjector
-    tag: v1.11.1
+    tag: v1.13.1
   podLabels:
     app.starlingx.io/component: "platform"
   nodeSelector:
@@ -105,7 +105,7 @@ cainjector:
 acmesolver:
   image:
     repository: quay.io/jetstack/cert-manager-acmesolver
-    tag: v1.11.1
+    tag: v1.13.1
 startupapicheck:
   tolerations:
     - key: "node-role.kubernetes.io/master"
@@ -116,4 +116,4 @@ startupapicheck:
       effect: "NoSchedule"
   image:
     repository: quay.io/jetstack/cert-manager-ctl
-    tag: v1.11.1
+    tag: v1.13.1

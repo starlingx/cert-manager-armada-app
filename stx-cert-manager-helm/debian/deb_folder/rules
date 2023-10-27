@@ -15,8 +15,8 @@ export APP_TARBALL = $(APP_NAME)-$(APP_VERSION).tgz
 export HELM_REPO = stx-platform
 export STAGING = staging
 
-export PATCH_1 = 0001-Patch-for-chartyaml-cm-v1.11.1.patch
-export CM_VERSION = 1.11.1
+export PATCH_1 = 0001-Patch-for-chartyaml-cm-v1.13.1.patch
+export CM_VERSION = 1.13.1
 
 %:
 	dh $@

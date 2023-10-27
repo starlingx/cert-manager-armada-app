@@ -1,7 +1,7 @@
 From 33cf9baf34b3006d997e951a9cf787fb6a04c450 Mon Sep 17 00:00:00 2001
-From: Karla Felix <karla.karolinenogueirafelix@windriver.com>
-Date: Wed, 5 Mar 2023 12:45:23 -0500
-Subject: [PATCH] Patch for chartyaml-cm-v1.11.1
+From: Ayyappa Mantri <ayyappa.mantri@windriver.com>
+Date: Wed, 27 Oct 2023 14:46:24 -0500
+Subject: [PATCH] add chart yaml for cert-manager
 
 ---
  deploy/charts/cert-manager/Chart.yaml         | 20 +++++++++++++++++++
@@ -17,8 +17,8 @@ index 000000000..d4476fd70
 +apiVersion: v1
 +name: cert-manager
 +# The version and appVersion fields are set automatically by the release tool
-+version: v1.11.1
-+appVersion: v1.11.1
++version: v1.13.1
++appVersion: v1.13.1
 +description: A Helm chart for cert-manager
 +home: https://github.com/cert-manager/cert-manager
 +icon: https://raw.githubusercontent.com/jetstack/cert-manager/master/logo/logo.png
