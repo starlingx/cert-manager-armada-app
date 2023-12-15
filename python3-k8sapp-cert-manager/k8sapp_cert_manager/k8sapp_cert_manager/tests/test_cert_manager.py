@@ -1,9 +1,12 @@
-# Copyright (c) 2020 Wind River Systems, Inc.
+# Copyright (c) 2023 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
+import mock
+
 from k8sapp_cert_manager.common import constants as app_constants
 from k8sapp_cert_manager.tests import test_plugins
+from k8sapp_cert_manager.helm import cert_manager
 
 from sysinv.db import api as dbapi
 from sysinv.helm import common
@@ -20,6 +23,13 @@ class CertManagerTestCase(test_plugins.K8SAppCertMgrAppMixin,
         super(CertManagerTestCase, self).setUp()
         self.app = dbutils.create_test_app(name='cert-manager')
         self.dbapi = dbapi.get_instance()
+
+        # Mock get_disk_capacity utility
+        self.mock_get_current_pod_labels = mock.MagicMock()
+        p = mock.patch('k8sapp_cert_manager.helm.cert_manager.CertMgrHelm._get_current_pod_labels',
+                       self.mock_get_current_pod_labels)
+        p.start().return_value = cert_manager.CertMgrHelm.DEFAULT_LABEL_OVERRIDES
+        self.addCleanup(p.stop)
 
 
 class CertManagerIPv4ControllerHostTestCase(CertManagerTestCase,
