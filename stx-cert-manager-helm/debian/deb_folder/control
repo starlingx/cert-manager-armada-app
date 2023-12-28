@@ -7,7 +7,8 @@ Build-Depends: debhelper-compat (= 13),
  helm,
  procps,
  python3-k8sapp-cert-manager,
- python3-k8sapp-cert-manager-wheels
+ python3-k8sapp-cert-manager-wheels,
+ build-info
 Standards-Version: 4.5.1
 Homepage: https://www.starlingx.io
 
