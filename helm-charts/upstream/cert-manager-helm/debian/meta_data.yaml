@@ -1,0 +1,15 @@
+---
+debname: cert-manager-helm
+debver: 1.13-1
+dl_path:
+  name: cert-manager-helm-1.13.1.tar.gz
+  url: https://github.com/cert-manager/cert-manager/archive/refs/tags/v1.13.1.tar.gz
+  sha256sum: e4a6dc4f937742ea48b102118abd509b647bc96e82634d54db17a5d1126e169c
+src_files:
+  - cert-manager-helm/files/Makefile
+revision:
+  dist: $STX_DIST
+  stx_patch: 0
+  GITREVCOUNT:
+    BASE_SRCREV: 1008d7e9815526b72ad2587422764b826a3d0c5b
+    SRC_DIR: ${MY_REPO}/stx/cert-manager-armada-app/helm-charts/upstream/cert-manager-helm

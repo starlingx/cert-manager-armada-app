@@ -8,52 +8,35 @@ export DEB_VERSION = $(shell dpkg-parsechangelog | egrep '^Version:' | cut -f 2 
 export RELEASE = $(shell cat /etc/build.info | grep SW_VERSION | cut -d'"' -f2)
 export REVISION = $(shell echo $(DEB_VERSION) | cut -f 4 -d '.')
 
-
 export APP_NAME = cert-manager
 export APP_VERSION = $(RELEASE)-$(REVISION)
 export APP_TARBALL = $(APP_NAME)-$(APP_VERSION).tgz
+export HELM_FOLDER = /usr/lib/helm
 export HELM_REPO = stx-platform
 export STAGING = staging
-
-export PATCH_1 = 0001-Patch-for-chartyaml-cm-v1.13.1.patch
-export CM_VERSION = 1.13.1
 
 %:
 	dh $@
 
 override_dh_auto_build:
-	# Host a server for the helm charts.
-	chartmuseum --debug --port=8879 --context-path='/charts' --storage="local" --storage-local-rootdir="." &
-	sleep 2
-	helm repo add local http://localhost:8879/charts
-
-	# Extract the cert-manager chart
-	rm -rf fluxcd
-	mkdir -p fluxcd
-	# Extract the upstream source
-	tar -C fluxcd -xf helm-charts-certmanager-$(CM_VERSION).tar.gz
-
-	# Apply patches with our modifications
-	cp files/$(PATCH_1) fluxcd/helm-charts
-	cd fluxcd/helm-charts ; \
-	patch -p1 < $(PATCH_1) ; \
-	# Copy CRD yaml files to templates ; \
-	cp deploy/crds/*.yaml deploy/charts/cert-manager/templates/ ; \
-
-	# Make the updated cert-manager helm-chart
-	cp files/Makefile fluxcd/helm-charts/deploy/charts
-	cd fluxcd/helm-charts/deploy/charts && $(MAKE) cert-manager
-	cd fluxcd/helm-charts/deploy/charts && mv *.tgz $(APP_TARBALL)
-
-	# Terminate the helm chart server.
-	pkill chartmuseum
-
 	# Setup the staging directory.
 	mkdir -p $(STAGING)
 	cp files/metadata.yaml $(STAGING)
+	cp -Rv fluxcd-manifests $(STAGING)
 	mkdir -p $(STAGING)/charts
-	cp fluxcd/helm-charts/deploy/charts/cert*.tgz $(STAGING)/charts
-	cp -R fluxcd-manifests/ $(STAGING)/
+	cp /usr/lib/helm/*.tgz $(STAGING)/charts
+
+	# Adjust the helmrelease yamls based on the chart versions
+	for c in $(STAGING)/charts/*; do \
+		chart=$$(basename $$c .tgz); \
+		chart_name=$${chart%-*}; \
+		chart_version=$${chart##*-}; \
+		echo "Found $$chart; name: $$chart_name, version: $$chart_version"; \
+		chart_manifest=$$(find $(STAGING)/fluxcd-manifests -name helmrelease.yaml -exec grep -q "chart:.*$$chart_name" {} \; -print); \
+		echo "Updating manifest: $$chart_manifest"; \
+		sed -i "s/REPLACE_HELM_CHART_VERSION/$$chart_version/g" $$chart_manifest; \
+		grep version $$chart_manifest; \
+	done
 
 	# Populate metadata.
 	sed -i 's/APP_REPLACE_NAME/$(APP_NAME)/g' $(STAGING)/metadata.yaml
@@ -64,9 +47,9 @@ override_dh_auto_build:
 	mkdir -p $(STAGING)/plugins
 	cp /plugins/*.whl $(STAGING)/plugins
 
-	# Generate checksum file and package the tarball
+	# Create the app package.
 	cd $(STAGING) && find . -type f ! -name '*.md5' -print0 | xargs -0 md5sum > checksum.md5
-	tar -zcf $(APP_TARBALL) -C $(STAGING)/ .
+	tar cfz $(APP_TARBALL) -C $(STAGING)/ .
 
 	# Cleanup staging
 	rm -rf $(STAGING)

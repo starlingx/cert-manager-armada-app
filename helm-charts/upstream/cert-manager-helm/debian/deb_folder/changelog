@@ -1,0 +1,5 @@
+cert-manager-helm (1.13-1) unstable; urgency=medium
+
+  * Initial release matching helm chart version used.
+
+ --  Joshua Reed <joshua.reed@windriver.com>  Tue, 21 Feb 2024 14:54:00 +0000
