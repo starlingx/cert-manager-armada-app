@@ -71,6 +71,11 @@ webhook:
     rollingUpdate:
       maxSurge: 1
       maxUnavailable: 1
+  livenessProbe:
+    timeoutSeconds: 5
+  readinessProbe:
+    timeoutSeconds: 5
+    periodSeconds: 10
 cainjector:
   replicaCount: 1
   image:
