@@ -1,0 +1,32 @@
+From 524b17ab360dc51d95ae57a009e7bc7d06e4b795 Mon Sep 17 00:00:00 2001
+From: David Bastos <david.barbosabastos@windriver.com>
+Date: Mon, 17 Mar 2025 14:20:36 -0300
+Subject: [PATCH] Allow adding properties to values.yaml
+
+The app_framework needs the chart to allow adding properties that
+are not listed in values.schema.json because it uses this to add
+"reconcile_trigger" and force fluxcd reconciliation. Once the
+Fluxcd CLI is available on the platform, this patch will no
+longer be needed.
+
+Signed-off-by: David Bastos <david.barbosabastos@windriver.com>
+---
+ deploy/charts/cert-manager/values.schema.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/deploy/charts/cert-manager/values.schema.json b/deploy/charts/cert-manager/values.schema.json
+index d04da90..f9bd5a4 100644
+--- a/deploy/charts/cert-manager/values.schema.json
++++ b/deploy/charts/cert-manager/values.schema.json
+@@ -1,7 +1,7 @@
+ {
+   "$defs": {
+     "helm-values": {
+-      "additionalProperties": false,
++      "additionalProperties": true,
+       "properties": {
+         "acmesolver": {
+           "$ref": "#/$defs/helm-values.acmesolver"
+-- 
+2.34.1
+
