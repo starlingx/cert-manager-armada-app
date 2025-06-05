@@ -1,3 +1,9 @@
+cert-manager-helm (1.17-2) unstable; urgency=medium
+
+  * App upversion
+
+ --  ealmeida <Eduardo.AlmeidadosSantos@windriver.com>  Thu 05 Jun 2025 09:50:00 -0300
+
 cert-manager-helm (1.16-3) unstable; urgency=medium
 
   * App upversion
