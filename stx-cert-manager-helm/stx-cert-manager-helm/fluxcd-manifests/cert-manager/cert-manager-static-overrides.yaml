@@ -39,6 +39,8 @@ strategy:
     maxUnavailable: 1
 extraArgs:
   - --enable-certificate-owner-ref=true
+  - --kube-api-qps=50
+  - --kube-api-burst=100
 webhook:
   replicaCount: 1
   image:
