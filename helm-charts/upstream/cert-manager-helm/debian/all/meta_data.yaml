@@ -1,10 +1,10 @@
 ---
 debname: cert-manager-helm
-debver: 1.17-2
+debver: 1.18.3-1
 dl_path:
-  name: cert-manager-helm-1.17.2.tar.gz
-  url: https://github.com/cert-manager/cert-manager/archive/refs/tags/v1.17.2.tar.gz
-  sha256sum: 77996ac7550534739e4ceeecfb650218900b26da9f9d31e12609946c8f20eeb6
+  name: cert-manager-helm-1.18.3.tar.gz
+  url: https://github.com/cert-manager/cert-manager/archive/refs/tags/v1.18.3.tar.gz
+  sha256sum: b56f72c75f0eba30e32ce4da77956b1136ae671e603d745f587104daa4a0cf07
 src_files:
   - cert-manager-helm/files/Makefile
 revision:
