@@ -1,3 +1,9 @@
+cert-manager-helm (1.18.3-1) unstable; urgency=medium
+
+  * New upstream release 1.18.3-1
+
+ -- gdinizcr <gabriel.DinizCremel@windriver.com>  Fri, 12 Dec 2025 18:39:01 +0000
+
 cert-manager-helm (1.17-2) unstable; urgency=medium
 
   * App upversion
