@@ -1,16 +1,16 @@
 #
-# Copyright (c) 2022-2023 Wind River Systems, Inc.
+# Copyright (c) 2022-2025 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
 
 global:
-  imagePullSecrets: [{"name": "default-registry-key"}]
+  imagePullSecrets: ["name": "default-registry-key"]
 installCRDs: true
 replicaCount: 1
 image:
   repository: quay.io/jetstack/cert-manager-controller
-  tag: v1.16.3
+  tag: v1.18.3
 podLabels:
   app.starlingx.io/component: "platform"
 nodeSelector:
@@ -18,13 +18,13 @@ nodeSelector:
 affinity:
   podAntiAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
-    - labelSelector:
-        matchExpressions:
-        - key: app
-          operator: In
-          values:
-          - cert-manager
-      topologyKey: kubernetes.io/hostname
+      - labelSelector:
+          matchExpressions:
+            - key: app
+              operator: In
+              values:
+                - cert-manager
+        topologyKey: kubernetes.io/hostname
 tolerations:
   - key: "node-role.kubernetes.io/master"
     operator: "Exists"
@@ -39,11 +39,13 @@ strategy:
     maxUnavailable: 1
 extraArgs:
   - --enable-certificate-owner-ref=true
+  - --kube-api-qps=50
+  - --kube-api-burst=100
 webhook:
   replicaCount: 1
   image:
     repository: quay.io/jetstack/cert-manager-webhook
-    tag: v1.16.3
+    tag: v1.18.3
   podLabels:
     app.starlingx.io/component: "platform"
   nodeSelector:
@@ -51,13 +53,13 @@ webhook:
   affinity:
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
-      - labelSelector:
-          matchExpressions:
-          - key: app
-            operator: In
-            values:
-            - webhook
-        topologyKey: kubernetes.io/hostname
+        - labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - webhook
+          topologyKey: kubernetes.io/hostname
   tolerations:
     - key: "node-role.kubernetes.io/master"
       operator: "Exists"
@@ -79,7 +81,7 @@ cainjector:
   replicaCount: 1
   image:
     repository: quay.io/jetstack/cert-manager-cainjector
-    tag: v1.16.3
+    tag: v1.18.3
   podLabels:
     app.starlingx.io/component: "platform"
   nodeSelector:
@@ -87,13 +89,13 @@ cainjector:
   affinity:
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
-      - labelSelector:
-          matchExpressions:
-          - key: app
-            operator: In
-            values:
-            - cainjector
-        topologyKey: kubernetes.io/hostname
+        - labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - cainjector
+          topologyKey: kubernetes.io/hostname
   tolerations:
     - key: "node-role.kubernetes.io/master"
       operator: "Exists"
@@ -109,7 +111,7 @@ cainjector:
 acmesolver:
   image:
     repository: quay.io/jetstack/cert-manager-acmesolver
-    tag: v1.16.3
+    tag: v1.18.3
 startupapicheck:
   tolerations:
     - key: "node-role.kubernetes.io/master"
@@ -120,4 +122,4 @@ startupapicheck:
       effect: "NoSchedule"
   image:
     repository: quay.io/jetstack/cert-manager-startupapicheck
-    tag: v1.16.3
+    tag: v1.18.3

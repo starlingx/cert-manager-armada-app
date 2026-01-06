@@ -26,3 +26,5 @@ behavior:
         filters:
           - personality: controller
       - type: kube-upgrade-complete
+
+class: critical
