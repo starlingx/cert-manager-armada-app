@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2022,2025 Wind River Systems, Inc.
+# Copyright (c) 2022,2025-2026 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -85,15 +85,6 @@ class CertManagerAppLifecycleOperator(base.AppLifecycleOperator):
                     hook_info.operation == constants.APP_APPLY_OP and \
                     hook_info.relative_timing == LifecycleConstants.APP_LIFECYCLE_TIMING_PRE:
                 return self.pre_auto_apply_check()
-
-        # Rbd
-        elif hook_info.lifecycle_type == LifecycleConstants.APP_LIFECYCLE_TYPE_RBD:
-            if hook_info.operation == constants.APP_APPLY_OP and \
-                    hook_info.relative_timing == LifecycleConstants.APP_LIFECYCLE_TIMING_PRE:
-                return lifecycle_utils.create_rbd_provisioner_secrets(app_op, app, hook_info)
-            elif hook_info.operation == constants.APP_REMOVE_OP and \
-                    hook_info.relative_timing == LifecycleConstants.APP_LIFECYCLE_TIMING_POST:
-                return lifecycle_utils.delete_rbd_provisioner_secrets(app_op, app, hook_info)
 
         # Resources
         elif hook_info.lifecycle_type == LifecycleConstants.APP_LIFECYCLE_TYPE_RESOURCE:
