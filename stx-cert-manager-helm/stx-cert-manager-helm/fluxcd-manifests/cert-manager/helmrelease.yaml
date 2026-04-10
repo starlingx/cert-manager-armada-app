@@ -27,7 +27,6 @@ spec:
     disableHooks: false
   upgrade:
     disableHooks: false
-    force: true
   valuesFrom:
     - kind: Secret
       name: cert-manager-static-overrides
