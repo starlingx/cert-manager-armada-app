@@ -1,0 +1,13 @@
+- hosts: all
+  tasks:
+    - name: Check security reports directory exists
+      stat:
+        path: "{{ zuul.project.src_dir }}/python3-k8sapp-cert-manager/k8sapp_cert_manager/UTCoverage/"
+      register: security_dir_stat
+
+    - name: Upload security reports
+      synchronize:
+        src: "{{ zuul.project.src_dir }}/python3-k8sapp-cert-manager/k8sapp_cert_manager/UTCoverage/"
+        dest: "{{ zuul.executor.log_root }}/security/"
+        mode: pull
+      when: security_dir_stat.stat.exists

@@ -10,6 +10,13 @@
         - k8sapp-cert-mgr-tox-pylint
         - k8sapp-cert-mgr-tox-metadata
         - k8sapp-cert-mgr-tox-bandit
+        - k8sapp-cert-mgr-tox-coverage
+        - k8sapp-cert-mgr-tox-security
+        - k8sapp-cert-mgr-tox-py313
+        - k8sapp-cert-mgr-tox-coverage-trixie
+        - k8sapp-cert-mgr-tox-security-trixie
+        - k8sapp-cert-mgr-tox-flake8-trixie
+        - k8sapp-cert-mgr-tox-pylint-trixie
     gate:
       jobs:
         - openstack-tox-linters
@@ -18,6 +25,13 @@
         - k8sapp-cert-mgr-tox-pylint
         - k8sapp-cert-mgr-tox-metadata
         - k8sapp-cert-mgr-tox-bandit
+        - k8sapp-cert-mgr-tox-coverage
+        - k8sapp-cert-mgr-tox-security
+        - k8sapp-cert-mgr-tox-py313
+        - k8sapp-cert-mgr-tox-coverage-trixie
+        - k8sapp-cert-mgr-tox-security-trixie
+        - k8sapp-cert-mgr-tox-flake8-trixie
+        - k8sapp-cert-mgr-tox-pylint-trixie
     post:
       jobs:
         - stx-cert-manager-armada-app-upload-git-mirror
@@ -39,6 +53,9 @@
       tox_extra_args: -c python3-k8sapp-cert-manager/k8sapp_cert_manager/tox.ini
       tox_constraints_file: '{{ ansible_user_dir }}/src/opendev.org/starlingx/root/build-tools/requirements/debian/upper-constraints.txt'
 
+# NOTE: A Trixie-specific metadata job is not needed because the metadata
+# test validates app metadata YAML structure which is Python-version agnostic.
+# It does not depend on Python runtime behavior that differs between 3.9/3.13.
 - job:
     name: k8sapp-cert-mgr-tox-metadata
     nodeset: debian-bullseye
@@ -108,6 +125,146 @@
       tox_envlist: bandit
       tox_extra_args: -c python3-k8sapp-cert-manager/k8sapp_cert_manager/tox.ini
       tox_constraints_file: '{{ ansible_user_dir }}/src/opendev.org/starlingx/root/build-tools/requirements/debian/upper-constraints.txt'
+
+- job:
+    name: k8sapp-cert-mgr-tox-coverage
+    parent: tox
+    description: |
+      Run all tests with coverage analysis for k8sapp-cert-manager
+    nodeset: debian-bullseye
+    required-projects:
+      - starlingx/config
+      - starlingx/fault
+      - starlingx/utilities
+      - starlingx/root
+    files:
+      - python3-k8sapp-cert-manager/*
+    vars:
+      tox_envlist: coverage
+      tox_extra_args: -c python3-k8sapp-cert-manager/k8sapp_cert_manager/tox.ini
+      tox_constraints_file: '{{ ansible_user_dir }}/src/opendev.org/starlingx/root/build-tools/requirements/debian/upper-constraints.txt'
+    post-run: playbooks/upload-coverage-reports.yaml
+
+- job:
+    name: k8sapp-cert-mgr-tox-security
+    parent: tox
+    description: |
+      Run security analysis for k8sapp-cert-manager
+    nodeset: debian-bullseye
+    required-projects:
+      - starlingx/config
+      - starlingx/fault
+      - starlingx/utilities
+      - starlingx/root
+    files:
+      - python3-k8sapp-cert-manager/*
+    vars:
+      tox_envlist: security
+      tox_extra_args: -c python3-k8sapp-cert-manager/k8sapp_cert_manager/tox.ini
+      tox_constraints_file: '{{ ansible_user_dir }}/src/opendev.org/starlingx/root/build-tools/requirements/debian/upper-constraints.txt'
+    post-run: playbooks/upload-security-reports.yaml
+
+- job:
+    name: k8sapp-cert-mgr-tox-py313
+    parent: tox
+    description: |
+      Run py313 for k8sapp-cert-manager
+    nodeset: debian-trixie-8GB
+    required-projects:
+      - starlingx/config
+      - starlingx/fault
+      - starlingx/utilities
+      - starlingx/root
+    files:
+      - python3-k8sapp-cert-manager/*
+    vars:
+      # Override project-level ensure_tox_version '<4' to use Trixie system tox 4.x
+      ensure_tox_version: ''
+      tox_envlist: py313
+      tox_extra_args: -c python3-k8sapp-cert-manager/k8sapp_cert_manager/tox.ini
+      tox_constraints_file: '{{ ansible_user_dir }}/src/opendev.org/starlingx/root/build-tools/requirements/debian/trixie/upper-constraints.txt'
+
+- job:
+    name: k8sapp-cert-mgr-tox-coverage-trixie
+    parent: tox
+    description: |
+      Run coverage analysis for k8sapp-cert-manager (Trixie)
+    nodeset: debian-trixie-8GB
+    required-projects:
+      - starlingx/config
+      - starlingx/fault
+      - starlingx/utilities
+      - starlingx/root
+    files:
+      - python3-k8sapp-cert-manager/*
+    vars:
+      # Override project-level ensure_tox_version '<4' to use Trixie system tox 4.x
+      ensure_tox_version: ''
+      tox_envlist: coverage-trixie
+      tox_extra_args: -c python3-k8sapp-cert-manager/k8sapp_cert_manager/tox.ini
+      tox_constraints_file: '{{ ansible_user_dir }}/src/opendev.org/starlingx/root/build-tools/requirements/debian/trixie/upper-constraints.txt'
+    post-run: playbooks/upload-coverage-reports.yaml
+
+- job:
+    name: k8sapp-cert-mgr-tox-security-trixie
+    parent: tox
+    description: |
+      Run security analysis for k8sapp-cert-manager (Trixie)
+    nodeset: debian-trixie-8GB
+    required-projects:
+      - starlingx/config
+      - starlingx/fault
+      - starlingx/utilities
+      - starlingx/root
+    files:
+      - python3-k8sapp-cert-manager/*
+    vars:
+      # Override project-level ensure_tox_version '<4' to use Trixie system tox 4.x
+      ensure_tox_version: ''
+      tox_envlist: security-trixie
+      tox_extra_args: -c python3-k8sapp-cert-manager/k8sapp_cert_manager/tox.ini
+      tox_constraints_file: '{{ ansible_user_dir }}/src/opendev.org/starlingx/root/build-tools/requirements/debian/trixie/upper-constraints.txt'
+    post-run: playbooks/upload-security-reports.yaml
+
+- job:
+    name: k8sapp-cert-mgr-tox-flake8-trixie
+    parent: tox
+    description: |
+      Run flake8 test for k8sapp-cert-manager (Trixie)
+    nodeset: debian-trixie-8GB
+    required-projects:
+      - starlingx/config
+      - starlingx/fault
+      - starlingx/utilities
+      - starlingx/root
+    files:
+      - python3-k8sapp-cert-manager/*
+    vars:
+      # Override project-level ensure_tox_version '<4' to use Trixie system tox 4.x
+      ensure_tox_version: ''
+      tox_envlist: flake8-trixie
+      tox_extra_args: -c python3-k8sapp-cert-manager/k8sapp_cert_manager/tox.ini
+      tox_constraints_file: '{{ ansible_user_dir }}/src/opendev.org/starlingx/root/build-tools/requirements/debian/trixie/upper-constraints.txt'
+
+- job:
+    name: k8sapp-cert-mgr-tox-pylint-trixie
+    parent: tox
+    description: |
+      Run pylint test for k8sapp-cert-manager (Trixie)
+    nodeset: debian-trixie-8GB
+    required-projects:
+      - starlingx/config
+      - starlingx/fault
+      - starlingx/utilities
+      - starlingx/root
+    files:
+      - python3-k8sapp-cert-manager/*
+    vars:
+      # Override project-level ensure_tox_version '<4' to use Trixie system tox 4.x
+      ensure_tox_version: ''
+      tox_envlist: pylint-trixie
+      tox_extra_args: -c python3-k8sapp-cert-manager/k8sapp_cert_manager/tox.ini
+      tox_constraints_file: '{{ ansible_user_dir }}/src/opendev.org/starlingx/root/build-tools/requirements/debian/trixie/upper-constraints.txt'
 
 - job:
     name: stx-cert-manager-armada-app-upload-git-mirror
