@@ -20,9 +20,6 @@ override_dh_auto_build:
 	cp -r deploy/charts/* cert-manager
 	cp cert-manager/cert-manager/Chart.template.yaml cert-manager/cert-manager/Chart.yaml
 
-	# Copy CRD yaml files to templates
-	cp deploy/crds/*.yaml cert-manager/cert-manager/templates
-
 	cp Makefile cert-manager
 
 	cd cert-manager && make CHART_VERSION=$(CHART_VERSION) cert-manager
